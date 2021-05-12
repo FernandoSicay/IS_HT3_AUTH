@@ -4,7 +4,7 @@ spring:
       resourceserver:
         jwt:
           key-value: 'Fernando1818'
-          expire-time-seconds: 60
+          expire-time-seconds: 1000
   mvc:
     converters:
       preferred-json-mapper: gson

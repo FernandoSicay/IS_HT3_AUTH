@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
+import java.security.Key;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,13 +25,19 @@ public class JWTSecurity {
 
     public String createJWT(String user, String pass) throws RuntimeException, CustomException {
 
+        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+
         long nowMillis = System.currentTimeMillis();
         Date date = new Date(nowMillis);
 
         long timeExpire = this.timeExpire * 1000;
         Date dateExpire = new Date(timeExpire + nowMillis);
 
-        Claims claims = Jwts.claims().setSubject(user).setSubject(pass);
+        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(key);
+        Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
+
+
+        Claims claims = Jwts.claims().setSubject(user);
 
         if(validateKey()){
             return Jwts.builder()
