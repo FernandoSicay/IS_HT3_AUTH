@@ -1,0 +1,12 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          key-value: 'Fernando1818'
+          expire-time-seconds: 60
+  mvc:
+    converters:
+      preferred-json-mapper: gson
+server:
+  port: 9191
